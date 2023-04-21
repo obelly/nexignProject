@@ -10,6 +10,7 @@ public class ApplicationCdrService {
     public static void main(String[] args) {
 
         SpringApplication.run(ApplicationCdrService.class, args);
+
     }
 
 }
