@@ -6,13 +6,14 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class RabbitConfig {
+
     @Bean
-    public Queue newCallDataRecord(){
+    public Queue newCallDataRecord() {
         return new Queue("call_data_records_plus", true);
     }
 
     @Bean
-    public Queue abonentNumberAnswer(){
+    public Queue abonentNumberAnswer() {
         return new Queue("abonent_numbers_answer", true);
     }
 }

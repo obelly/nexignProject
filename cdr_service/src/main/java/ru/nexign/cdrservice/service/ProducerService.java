@@ -1,9 +1,6 @@
 package ru.nexign.cdrservice.service;
 
-import java.io.File;
-
 public interface ProducerService {
-    void produce(byte[] file);
-
+    void produceCdr(byte[] file);
     void produceGetNumbers();
 }

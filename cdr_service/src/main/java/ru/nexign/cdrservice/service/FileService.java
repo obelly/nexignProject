@@ -3,7 +3,6 @@ package ru.nexign.cdrservice.service;
 import java.util.List;
 
 public interface FileService {
-    byte[] generateFileWithCallDataRecords();
+    void generateFileWithCallDataRecords(List<String> phoneNumbers);
 
-    long getNumber(List<Long> numbers);
 }

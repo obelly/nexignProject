@@ -6,7 +6,6 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
-import ru.nexign.cdrservice.command.parser.ParseCommand;
 import ru.nexign.cdrservice.service.ConsumerService;
 import ru.nexign.cdrservice.service.FileService;
 
@@ -18,13 +17,12 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ConsumerServiceImpl implements ConsumerService {
 
-    ParseCommand<Long> parseCommand;
     FileService fileService;
 
     @RabbitListener(queues = "abonent_numbers_answer")
     @Override
-    public void consume(byte[] file) {
-        List<Long> numbers = parseCommand.process(file);
-        fileService.getNumber(numbers);
+    public void consumePhoneNumbers(List<String> phoneNumbers) {
+        fileService.generateFileWithCallDataRecords(phoneNumbers);
+        log.info("Список номеров передан в генератор файла cdr");
     }
 }

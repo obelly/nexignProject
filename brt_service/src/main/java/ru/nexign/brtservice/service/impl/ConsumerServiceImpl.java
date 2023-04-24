@@ -10,10 +10,12 @@ import ru.nexign.brtservice.command.export.ExportCommand;
 import ru.nexign.brtservice.command.parser.ParseCommand;
 import ru.nexign.brtservice.dto.CallDataRecord;
 import ru.nexign.brtservice.dto.CallDataRecordPlus;
-import ru.nexign.brtservice.ro.ChangeBalance;
+import ru.nexign.brtservice.dto.ChangeBalance;
+import ru.nexign.brtservice.entity.Abonent;
+//import ru.nexign.brtservice.ro.ChangeBalance;
 import ru.nexign.brtservice.service.AbonentService;
 import ru.nexign.brtservice.service.ConsumerService;
-import ru.nexign.brtservice.service.ProducerService;
+import ru.nexign.brtservice.service.FileSender;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,45 +28,60 @@ public class ConsumerServiceImpl implements ConsumerService {
     ParseCommand<CallDataRecord> parseCommand;
     ParseCommand<ChangeBalance> changeBalanceParseCommand;
     ExportCommand<CallDataRecordPlus> exportCommand;
-    ProducerService producerService;
+    FileSender fileSender;
+
     AbonentService abonentService;
 
+    @RabbitListener(queues = "new_call_data_record")
+    @Override
+    public void consumeCdr(byte[] file) {
+        var callDataRecords = parseCommand.process(file);
+        log.info("cdr файл получен {}", callDataRecords);
+        List<CallDataRecordPlus> callDataRecordsPluses = new ArrayList<>();
+        for (var callDataRecord : callDataRecords) {
+            if (isAuthorizeAbonent(callDataRecord.getNumberPhone())) {
+                var callDataRecordPlus = new CallDataRecordPlus();
+                callDataRecordPlus.setNumberPhone(callDataRecord.getNumberPhone());
 
+                callDataRecordPlus.setTariffType(abonentService.getAbonentByPhone(
+                                callDataRecord.getNumberPhone()).getTariff().getTariffNumber());
 
-//    @RabbitListener(queues = "new_call_data_record")
-//    @Override
-//    public void consume(byte[] file) {
-//        var callDataRecords = parseCommand.process(file);
-//        List<CallDataRecordPlus> callDataRecordsPluses = new ArrayList<>();
-//        for (var callDataRecord : callDataRecords) {
-//            var callDataRecordPlus = new CallDataRecordPlus();
-//            callDataRecordPlus.setNumberPhone(callDataRecord.getNumberPhone());
-//            callDataRecordPlus.setCallType(callDataRecord.getCallType());
-//            callDataRecordPlus.setStartTime(callDataRecord.getStartTime());
-//            callDataRecordPlus.setEndTime(callDataRecord.getEndTime());
-//            callDataRecordPlus.setTariff(abonentService.getAbonentByPhone(callDataRecord.getNumberPhone()).getTariff());
-//
-//            callDataRecordsPluses.add(callDataRecordPlus);
-//        }
-//        producerService.produce(exportCommand.process(callDataRecordsPluses));
-//    }
+                callDataRecordPlus.setCallType(callDataRecord.getCallType());
+                callDataRecordPlus.setStartTime(callDataRecord.getStartTime());
+                callDataRecordPlus.setEndTime(callDataRecord.getEndTime());
+
+                callDataRecordsPluses.add(callDataRecordPlus);
+            }
+        }
+        var callDataRecordPlusFile = exportCommand.process(callDataRecordsPluses);
+        fileSender.send(callDataRecordPlusFile);
+
+    }
+
+    private boolean isAuthorizeAbonent(String phoneNumber) {
+        Abonent abonentByPhoneNumber = abonentService.getAbonentByPhone(phoneNumber);
+        return abonentByPhoneNumber != null && abonentByPhoneNumber.getBalance() > 0;
+    }
 
     @RabbitListener(queues = "abonent_numbers")
     @Override
     public void consumeNumbersPhone() {
+        log.info("Выполняется запрос на список номеров");
         abonentService.getAllAbonentsPhone();
     }
 
     /**
      * Слушатель файла с HRS-сервиса с номером телефона и стоимостью услуг
      * Файл парсится в List
-     * С помощью, полученных данных меняется баланс у пользователей.
+     * С помощью полученных данных, меняется баланс у пользователей.
      */
+
     @RabbitListener(queues = "abonent_money")
     @Override
-    public void consumeAbonentMoney(byte[] file) {
-        var changeBalanceList = changeBalanceParseCommand.process(file);
-        changeBalanceList.forEach(abonentService::changeBalance);
+    public void consumeAbonentMoney(byte[] changeBalance) {
+        changeBalanceParseCommand.process(changeBalance)
+                .forEach(abonentService::changeBalance);
+        log.info("Произошли изменения в базе");
     }
 
 }

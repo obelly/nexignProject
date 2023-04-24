@@ -29,8 +29,7 @@ public class Tariff {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-
-    String tariffIndex;
+    String tariffNumber;
 
     String name;
 
@@ -41,11 +40,11 @@ public class Tariff {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         var tariff = (Tariff) o;
-        return Objects.equals(tariffIndex, tariff.tariffIndex);
+        return Objects.equals(tariff, tariff.tariffNumber);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(tariffIndex);
+        return Objects.hash(tariffNumber);
     }
 }

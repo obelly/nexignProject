@@ -1,6 +1,5 @@
 package ru.nexign.brtservice.entity;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -32,24 +31,24 @@ public class Abonent {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    String phone;
+    String numberPhone;
 
     Double balance;
 
-//    @OneToOne(fetch = FetchType.EAGER)
-//    @JoinColumn(name = "tariff_id")
-//    Tariff tariff;
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "tariff_id")
+    Tariff tariff;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         var client = (Abonent) o;
-        return Objects.equals(phone, client.phone);
+        return Objects.equals(numberPhone, client.numberPhone);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(phone);
+        return Objects.hash(numberPhone);
     }
 }

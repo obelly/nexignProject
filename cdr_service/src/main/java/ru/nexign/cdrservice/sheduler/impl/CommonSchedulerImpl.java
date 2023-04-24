@@ -17,19 +17,11 @@ import ru.nexign.cdrservice.sheduler.CommonScheduler;
 public class CommonSchedulerImpl implements CommonScheduler {
 
     ProducerService producerService;
-    FileService fileService;
 
-    @Scheduled(initialDelay = 20000,fixedRate = 30000) //каждые 30 секунд
-    @Override
-    public void execute() {
-        log.info("Отправка файла...");
-        var fileWithCallDataRecords = fileService.generateFileWithCallDataRecords();
-        producerService.produce(fileWithCallDataRecords);
-    }
-
-    @Scheduled(fixedRate = 60000)
+    @Scheduled(fixedRate = 120000)
     @Override
     public void executeNumbers() {
+        log.info("Запрос списка номеров...");
         producerService.produceGetNumbers();
     }
 
