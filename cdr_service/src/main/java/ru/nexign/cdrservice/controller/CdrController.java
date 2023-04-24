@@ -1,27 +1,27 @@
 package ru.nexign.cdrservice.controller;
 
-import org.springframework.web.bind.annotation.PatchMapping;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
+import ru.nexign.cdrservice.dto.BillingRun;
+import ru.nexign.cdrservice.service.ProducerService;
 
 @RestController
-@RequestMapping("api/v1")
+@RequestMapping("")
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CdrController {
+    ProducerService producerService;
 
-//    @PatchMapping("/manager/billing")
-//    public Numbers billing(){
-//
-//        List<Client> clients = userService.getAll();
-//        Numbers numberList = new Numbers();
-//        clients.forEach(client -> {
-//            BillingResponseRO responseRO = BillingResponseRO.builder()
-//                    .phoneNumber(client.getPhoneNumber())
-//                    .balance(client.getBalance())
-//                    .build();
-//            numberList.getNumbers().add(responseRO);
-//        });
-//        return numberList;
-//    }
+    @PostMapping("manager/billing")
+    public ResponseEntity<Void> billing(@RequestBody BillingRun billingRun) {
+        producerService.produceGetNumbers();
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

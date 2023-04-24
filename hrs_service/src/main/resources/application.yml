@@ -1,5 +1,5 @@
 server:
-  port: 8989
+  port: 9090
 
 spring:
   rabbitmq:
@@ -12,6 +12,6 @@ spring:
     url: jdbc:postgresql://localhost:5434/postgres?currentSchema=public
     username: postgres
     password: postgres
-  jpa:
-    hibernate:
-      ddl-auto: validate
+#  jpa:
+#    hibernate:
+#      ddl-auto: validate

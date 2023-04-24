@@ -17,7 +17,7 @@ public class ProducerServiceImpl implements ProducerService {
     RabbitTemplate rabbitTemplate;
 
     @Override
-    public void produce(byte[] file) {
+    public void produceCdr(byte[] file) {
         rabbitTemplate.convertAndSend("new_call_data_record", file);
         log.info("Файл cdr.txt отправлен в очередь new_call_data_record");
     }
@@ -25,6 +25,7 @@ public class ProducerServiceImpl implements ProducerService {
     @Override
     public void produceGetNumbers() {
         rabbitTemplate.send("abonent_numbers", new Message(new byte[1]));
+        log.info("Запрос на получение номера пользователей отправлен в очередь abonent_numbers ");
     }
 
 }

@@ -18,17 +18,16 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static ru.nexign.brtservice.constants.FileConstants.SPLIT_REGEX;
-
 
 /**
  * Реализация сервиса парсинга файлов.
- *
- * @author Lds
+ * <p>
+ * Парсит файл в List<CallDataRecord>.
  */
 @Service
 @Slf4j
 public class ParseCommandImpl implements ParseCommand<CallDataRecord> {
+    public static final String SPLIT_REGEX = ", ";
 
     @Override
     public List<CallDataRecord> process(byte[] fileBytes) {
@@ -39,12 +38,13 @@ public class ParseCommandImpl implements ParseCommand<CallDataRecord> {
             String line;
             while ((line = reader.readLine()) != null) {
                 var fields = line.split(SPLIT_REGEX);
-                var record = new CallDataRecord();
-                record.setCallType(CallTypeEnum.getByNumber(fields[0]));
-                record.setNumberPhone(fields[1]);
-                record.setStartTime(LocalDateTime.parse(fields[2], DatePatternEnum.YYYY_MM_DD_HH_MM_SS_TOGETHER.getFormat()));
-                record.setEndTime(LocalDateTime.parse(fields[3], DatePatternEnum.YYYY_MM_DD_HH_MM_SS_TOGETHER.getFormat()));
-                callDataRecordList.add(record);
+                var callDataRecord = new CallDataRecord();
+                callDataRecord.setCallType(CallTypeEnum.getByNumber(fields[0]));
+                callDataRecord.setNumberPhone(fields[1]);
+                callDataRecord.setStartTime(LocalDateTime.parse(fields[2], DatePatternEnum.YYYY_MM_DD_HH_MM_SS_TOGETHER.getFormat()));
+                callDataRecord.setEndTime(LocalDateTime.parse(fields[3], DatePatternEnum.YYYY_MM_DD_HH_MM_SS_TOGETHER.getFormat()));
+
+                callDataRecordList.add(callDataRecord);
             }
         } catch (IOException e) {
             log.error(e.getMessage(), e);

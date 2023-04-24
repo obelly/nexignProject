@@ -12,7 +12,6 @@ import java.util.Map;
 /**
  * Перечисление типов вызовов.
  *
- * @author Lds
  */
 @Getter
 @RequiredArgsConstructor

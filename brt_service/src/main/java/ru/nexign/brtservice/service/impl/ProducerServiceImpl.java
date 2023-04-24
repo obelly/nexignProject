@@ -18,13 +18,13 @@ public class ProducerServiceImpl implements ProducerService {
     RabbitTemplate rabbitTemplate;
 
     @Override
-    public void produce(byte[] file) {
+    public void produceCdrPlus(byte[] file) {
         rabbitTemplate.convertAndSend("call_data_records_plus", file);
         log.info("Файл cdr+.txt отправлен в очередь call_data_records_plus");
     }
 
     @Override
-    public void producePhoneNumbers(List<Long> phones) {
+    public void producePhoneNumbers(List<String> phones) {
         rabbitTemplate.convertAndSend("abonent_numbers_answer", phones);
         log.info("Список телефонов отправлен в очередь abonent_numbers_answer");
     }

@@ -3,7 +3,7 @@ package ru.nexign.brtservice.service;
 import java.util.List;
 
 public interface ProducerService {
-    void produce(byte[] file);
+    void produceCdrPlus(byte[] file);
 
-    void producePhoneNumbers(List<Long> phones);
+    void producePhoneNumbers(List<String> phones);
 }

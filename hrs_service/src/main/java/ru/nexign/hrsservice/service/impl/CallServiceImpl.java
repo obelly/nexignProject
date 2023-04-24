@@ -19,6 +19,11 @@ public class CallServiceImpl implements CallService {
 
     @Override
     public Call getCallByPhone(String phone) {
-        return callRepository.getCallByNumberPhone(phone).get();
+        return callRepository.getCallByNumberPhone(phone).orElse(new Call(phone));
+    }
+
+    @Override
+    public void createCall(Call call) {
+        callRepository.save(call);
     }
 }
