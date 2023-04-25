@@ -7,7 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ru.nexign.crmservice.client.HrsServiceClient;
-import ru.nexign.crmservice.dto.AbonentCallsResponseRO;
+import ru.nexign.crmservice.dto.AbonentCallsResponse;
 
 @Slf4j
 @Service
@@ -16,7 +16,7 @@ import ru.nexign.crmservice.dto.AbonentCallsResponseRO;
 public class HrsService {
     HrsServiceClient hrsServiceClient;
 
-    public ResponseEntity<AbonentCallsResponseRO> detailingCalls(String numberPhone){
+    public ResponseEntity<AbonentCallsResponse> detailingCalls(String numberPhone){
         return hrsServiceClient.detailingCalls(numberPhone);
     }
 }

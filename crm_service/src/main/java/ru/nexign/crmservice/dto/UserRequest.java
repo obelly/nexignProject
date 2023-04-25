@@ -1,13 +1,13 @@
-package ru.nexign.brtservice.dto;
+package ru.nexign.crmservice.dto;
+
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
-@Getter
-@Setter
 @Builder
-public class TariffRequestRO {
+@Getter
+public class UserRequest {
     private String numberPhone;
     private String tariff;
+    private Double balance;
 }

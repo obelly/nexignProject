@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ru.nexign.hrsservice.enums.TariffTypeEnum;
 
 import java.util.List;
 
@@ -14,11 +13,11 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
-public class AbonentCallsResponseRO {
+public class AbonentCallsResponse {
     private Long id;
     private String numberPhone;
-    private TariffTypeEnum tariffIndex;
-    private List<CallResponseRO> payload;
+    private String tariff;
+    private List<CallResponse> payload;
     private Double totalCost;
     private String monetaryUnit;
 }

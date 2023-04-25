@@ -7,7 +7,7 @@ import lombok.ToString;
 @Builder
 @Getter
 @ToString
-public class TariffRequestRO {
+public class TariffRequest {
     private String numberPhone;
-    private String tariffId;
+    private String tariff;
 }

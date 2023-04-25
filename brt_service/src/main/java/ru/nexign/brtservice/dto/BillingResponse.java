@@ -1,11 +1,11 @@
-package ru.nexign.crmservice.dto;
+package ru.nexign.brtservice.dto;
 
 import lombok.Builder;
 import lombok.Getter;
 
 @Builder
 @Getter
-public class BillingResponseRO {
+public class BillingResponse {
     private String phoneNumber;
     private Double balance;
 }

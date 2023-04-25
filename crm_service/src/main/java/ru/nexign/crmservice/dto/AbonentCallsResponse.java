@@ -12,11 +12,11 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
-public class AbonentCallsResponseRO {
+public class AbonentCallsResponse {
     private Long id;
     private String numberPhone;
-    private String tariffIndex;
-    private List<CallResponseRO> payload;
+    private String tariff;
+    private List<CallResponse> payload;
     private Double totalCost;
     private String monetaryUnit;
 }
