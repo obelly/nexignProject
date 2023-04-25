@@ -1,11 +1,10 @@
-package ru.nexign.hrsservice.dto;
+package ru.nexign.crmservice.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ru.nexign.hrsservice.enums.CallTypeEnum;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -15,8 +14,8 @@ import java.time.LocalTime;
 @Getter
 @Setter
 @Builder
-public class CallResponseRO {
-    private CallTypeEnum callType;
+public class CallResponse {
+    private String call;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private LocalTime duration;

@@ -2,13 +2,11 @@ package ru.nexign.crmservice.dto;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.ToString;
 
-@ToString
 @Builder
 @Getter
-public class AbonentPayResponseRO {
+public class TariffResponse {
     private Long id;
     private String numberPhone;
-    private Integer money;
+    private String tariff;
 }

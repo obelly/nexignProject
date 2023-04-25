@@ -14,16 +14,12 @@ C
 cdr_service/pom.xml,6/2/622e2149da85813eb31c59012aad70dbfdc35460
 C
 hrs_service/pom.xml,6/c/6cbf214854be8ced2d9f39e47995509ebe2b2855
-7
-pom.xml,4/4/442292b8a7efeabbe4cc176709b833b1792140ec
 
 Ohrs_service/src/main/java/ru/nexign/hrsservice/command/parser/ParseCommand.java,7/c/7cbba0201da681131c4e70088d20802908809ac3
 †
 Vhrs_service/src/main/java/ru/nexign/hrsservice/exception/FileInteractionException.java,a/8/a866d89bb2523ba4107880f7afc81304441eee54
 C
 brt_service/pom.xml,6/5/65ddb7bea955a61a4de42b6d34357109e765e578
-w
-Gcdr_service/src/main/java/ru/nexign/cdrservice/config/RabbitConfig.java,d/d/dda57d85dabfdfac8625941352469fdbf948ed71
 y
 Ibrt_service/src/main/java/ru/nexign/brtservice/enums/DatePatternEnum.java,2/b/2bab65bf8cfe63de749bfa823e5d10e56a793798
 v
@@ -32,5 +28,3 @@ y
 Ihrs_service/src/main/java/ru/nexign/hrsservice/enums/DatePatternEnum.java,2/0/20c6e473c9d46bcc06fb8f7d73138f97c18a924b
 }
 Mhrs_service/src/main/java/ru/nexign/hrsservice/repository/CallRepository.java,2/3/238cecab47ca36105e6ebbe9d8aabd5fea85ce5b
-W
-'brt_service/cdr_plus_files/cdr_plus.txt,c/c/cc16d1fb1c2d1cf83834e121d8ef69d223ff03e1

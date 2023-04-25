@@ -5,8 +5,8 @@ import lombok.Getter;
 
 @Builder
 @Getter
-public class UserResponseRO {
+public class UserResponse {
     private String numberPhone;
-    private String tariffId;
+    private String tariff;
     private Double balance;
 }

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.nexign.crmservice.dto.AbonentCallsResponseRO;
+import ru.nexign.crmservice.dto.AbonentCallsResponse;
 import ru.nexign.crmservice.service.HrsService;
 
 
@@ -22,7 +22,7 @@ public class HrsController {
     HrsService hrsService;
 
     @GetMapping("/report/{numberPhone}")
-    public ResponseEntity<AbonentCallsResponseRO> detailingCalls(@PathVariable("numberPhone") String numberPhone) {
+    public ResponseEntity<AbonentCallsResponse> detailingCalls(@PathVariable("numberPhone") String numberPhone) {
         return hrsService.detailingCalls(numberPhone);
     }
 }

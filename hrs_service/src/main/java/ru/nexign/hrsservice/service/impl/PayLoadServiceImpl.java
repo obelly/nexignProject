@@ -4,8 +4,8 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
-import ru.nexign.hrsservice.dto.AbonentCallsResponseRO;
-import ru.nexign.hrsservice.dto.CallResponseRO;
+import ru.nexign.hrsservice.dto.AbonentCallsResponse;
+import ru.nexign.hrsservice.dto.CallResponse;
 import ru.nexign.hrsservice.entity.PayLoad;
 import ru.nexign.hrsservice.repository.CallRepository;
 import ru.nexign.hrsservice.repository.PayLoadRepository;
@@ -26,22 +26,22 @@ public class PayLoadServiceImpl implements PayLoadService {
     }
 
     @Override
-    public AbonentCallsResponseRO detailingCalls(String numbersPhone) {
+    public AbonentCallsResponse detailingCalls(String numbersPhone) {
         var call = callRepository.getCallByNumberPhone(numbersPhone).orElse(null);
         var allPayLoadsByCall = payLoadRepository.getAllByCall(call);
-        List<CallResponseRO> abonentCalls = new ArrayList<>();
+        List<CallResponse> abonentCalls = new ArrayList<>();
         allPayLoadsByCall.forEach(payLoad -> {
-            CallResponseRO callResponseRO = CallResponseRO.builder()
+            CallResponse callResponse = CallResponse.builder()
                     .callType(payLoad.getCallType())
                     .startTime(payLoad.getStartTime())
                     .endTime(payLoad.getEndTime())
                     .duration(payLoad.getDuration())
                     .cost(payLoad.getCost())
                     .build();
-            abonentCalls.add(callResponseRO);
+            abonentCalls.add(callResponse);
         });
         assert call != null;
-        return AbonentCallsResponseRO.builder()
+        return AbonentCallsResponse.builder()
                 .id(call.getId())
                 .numberPhone(call.getNumberPhone())
                 .tariffIndex(call.getTariff())

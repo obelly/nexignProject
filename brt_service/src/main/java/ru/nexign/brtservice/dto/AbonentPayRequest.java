@@ -1,15 +1,16 @@
 package ru.nexign.brtservice.dto;
 
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 
 @Getter
 @Setter
-@Builder
-public class AbonentPayResponseRO {
-    private Long id;
+@AllArgsConstructor
+@NoArgsConstructor
+public class AbonentPayRequest {
     private String numberPhone;
     private Double money;
 }

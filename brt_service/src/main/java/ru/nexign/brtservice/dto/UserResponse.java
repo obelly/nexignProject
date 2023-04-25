@@ -7,8 +7,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-public class TariffResponseRO {
-    private Long id;
+public class UserResponse {
     private String numberPhone;
     private String tariff;
+    private Double balance;
 }

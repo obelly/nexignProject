@@ -8,7 +8,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-public class AbonentPayRequestRO {
+public class AbonentPayResponse {
+    private Long id;
     private String numberPhone;
     private Double money;
 }
