@@ -1,16 +1,18 @@
 package ru.nexign.brtservice.dto;
 
 
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ru.nexign.brtservice.enums.TariffTypeEnum;
 
 @Getter
 @Setter
-@Builder
-public class UserRequestRO {
+@AllArgsConstructor
+@NoArgsConstructor
+public class UserRequest {
     private String numberPhone;
-    private TariffTypeEnum tariff;
+    private String tariff;
     private Double balance;
 }

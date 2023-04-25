@@ -12,7 +12,6 @@ import ru.nexign.brtservice.dto.CallDataRecord;
 import ru.nexign.brtservice.dto.CallDataRecordPlus;
 import ru.nexign.brtservice.dto.ChangeBalance;
 import ru.nexign.brtservice.entity.Abonent;
-//import ru.nexign.brtservice.ro.ChangeBalance;
 import ru.nexign.brtservice.service.AbonentService;
 import ru.nexign.brtservice.service.ConsumerService;
 import ru.nexign.brtservice.service.FileSender;
@@ -67,7 +66,7 @@ public class ConsumerServiceImpl implements ConsumerService {
     @Override
     public void consumeNumbersPhone() {
         log.info("Выполняется запрос на список номеров");
-        abonentService.getAllAbonentsPhone();
+        abonentService.getAllAbonentsPhoneAndSend();
     }
 
     /**
@@ -82,6 +81,7 @@ public class ConsumerServiceImpl implements ConsumerService {
         changeBalanceParseCommand.process(changeBalance)
                 .forEach(abonentService::changeBalance);
         log.info("Произошли изменения в базе");
+
     }
 
 }

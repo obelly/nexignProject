@@ -10,7 +10,6 @@ public class RabbitConfig {
     public Queue newCallDataRecord(){
         return new Queue("new_call_data_record", true);
     }
-
     @Bean
     public Queue abonentNumbers(){
         return new Queue("abonent_numbers", true);

@@ -10,15 +10,12 @@ import java.io.Serializable;
 @Getter
 @Setter
 public class ChangeBalance implements Serializable {
-
     private String numberPhone;
-
     private Double cost;
 
     @Override
     public String toString() {
         return
-                numberPhone +
-                ", " + cost;
+                numberPhone + ", " + cost;
     }
 }
