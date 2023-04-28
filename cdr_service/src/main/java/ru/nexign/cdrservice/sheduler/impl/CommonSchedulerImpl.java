@@ -18,7 +18,7 @@ public class CommonSchedulerImpl implements CommonScheduler {
 
     ProducerService producerService;
 
-    @Scheduled(fixedRate = 120000)
+    @Scheduled(fixedRate = 240000)
     @Override
     public void executeNumbers() {
         log.info("Запрос списка номеров...");

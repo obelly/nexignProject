@@ -10,12 +10,16 @@ import ru.nexign.cdrservice.exception.FileInteractionException;
 import ru.nexign.cdrservice.service.FileService;
 import ru.nexign.cdrservice.service.ProducerService;
 
+import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.nio.file.Files;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Random;
@@ -26,47 +30,61 @@ import java.util.Random;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class FileServiceImpl implements FileService {
+    private final Random random = new Random();
     private static final int MIN_LINES = 5;
     private static final int MAX_LINES = 10;
     private static final String DATE_TIME_PATTERN = "yyyyMMddHHmmss";
-    private static final String FILE_NAME = "cdr.txt";
+    private static final int TIME_UNIT = 60;
+    private static final String FILE_NAME = "cdr_%s.txt";
+    private static final String ROOT_DIRECTORY = "/Users/ob_so/IdeaProjects/nexignProject/cdr_service/cdr_files";
 
-    private static final String ROOT_DIRECTORY = "cdr_service/cdr_files";
     ProducerService producerService;
 
     @Override
     public void generateFileWithCallDataRecords(List<String> phoneNumbers) {
-        var linesCount = new Random().nextInt(MAX_LINES - MIN_LINES + 1) + MIN_LINES;
-        File tempFile = null;
-        try (var writer = new FileWriter(FILE_NAME)) {
-            for (int i = 0; i < linesCount; i++) {
-                writer.write(generateLine(phoneNumbers));
-                writer.write(System.lineSeparator());
-            }
-            writer.close();
-            tempFile = new File(FILE_NAME);
-            producerService.produceCdr(Files.readAllBytes(tempFile.toPath()));
-        } catch (IOException e) {
-            log.error(e.getMessage(), e);
-            throw new RuntimeException("Произошла ошибка при создании файла");
-        } finally {
-            if (tempFile != null && !tempFile.delete()) {
-                log.warn("Не удалось удалить временный файл: {}", tempFile.getAbsolutePath());
+        var dir = new File(ROOT_DIRECTORY);
+        if (!dir.exists() && !dir.mkdirs()) {
+            log.warn("Не удалось создать директорию: {}", ROOT_DIRECTORY);
+        }
+        var fileName = String.format(FILE_NAME, LocalTime.now());
+        var file = new File(dir, fileName);
+        var baos = new ByteArrayOutputStream();
 
+        var linesCount = random.nextInt(MAX_LINES - MIN_LINES + 1) + MIN_LINES;
+
+        try (var fileWriter = new FileWriter(file);
+             var bufferedWriter = new BufferedWriter(fileWriter);
+             var streamWriter = new OutputStreamWriter(baos)) {
+            for (int i = 0; i < linesCount; i++) {
+                var writeString = generateLine(phoneNumbers) + System.lineSeparator();
+                bufferedWriter.write(writeString);
+                streamWriter.write(writeString);
             }
+            streamWriter.flush();
+            producerService.produceCdr(baos.toByteArray());
+        } catch (IOException e) {
+            throw new FileInteractionException("Произошла ошибка при выгрузке файла");
         }
 
     }
 
     private String generateLine(List<String> phoneNumbers) {
-        var random = new Random();
-        var date = LocalDateTime.now();
+        var dateTime = getRandomDate();
         return (random.nextBoolean() ? CallTypeEnum.INCOMING.getNumber() : CallTypeEnum.OUTGOING.getNumber()) +
                 ", " +
                 phoneNumbers.get(random.nextInt(phoneNumbers.size())) +
                 ", " +
-                date.format(DateTimeFormatter.ofPattern(DATE_TIME_PATTERN)) +
+                dateTime.format(DateTimeFormatter.ofPattern(DATE_TIME_PATTERN)) +
                 ", " +
-                date.plusSeconds(random.nextInt(26) + 5).format(DateTimeFormatter.ofPattern(DATE_TIME_PATTERN));
+                dateTime.plusMinutes(random.nextInt(TIME_UNIT))
+                        .plusSeconds(random.nextInt(TIME_UNIT))
+                        .format(DateTimeFormatter.ofPattern(DATE_TIME_PATTERN));
+    }
+    private LocalDateTime getRandomDate() {
+        LocalDate date = LocalDate.now();
+        LocalTime now = LocalTime.now().plusHours(random.nextInt(TIME_UNIT))
+                .plusMinutes(random.nextInt(TIME_UNIT))
+                .plusSeconds(random.nextInt(TIME_UNIT));
+        return LocalDateTime.of(date, now);
     }
 }

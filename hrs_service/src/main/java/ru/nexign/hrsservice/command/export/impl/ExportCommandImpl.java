@@ -24,6 +24,7 @@ public class ExportCommandImpl implements ExportCommand<ChangeBalance> {
             for (var changeBalance : changeBalanceList) {
                 String changeBalanceString = changeBalance.toString();
                 streamWriter.write(changeBalanceString);
+                streamWriter.write(System.lineSeparator());
             }
             streamWriter.flush();
             return baos.toByteArray();

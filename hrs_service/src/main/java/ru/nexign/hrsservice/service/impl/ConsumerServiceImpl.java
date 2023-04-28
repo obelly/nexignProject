@@ -21,13 +21,10 @@ import ru.nexign.hrsservice.service.ConsumerService;
 import ru.nexign.hrsservice.service.PayLoadService;
 import ru.nexign.hrsservice.service.SenderService;
 
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 import java.time.Duration;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -64,21 +61,26 @@ public class ConsumerServiceImpl implements ConsumerService {
                     .getTariffType();
             call.setTariff(tariffType);
 
+            call.setMonetaryUnit(MONETARY_UNIT);
+
+            callService.createCall(call);
+            log.info("Звонок сохранен в базу");
+
             var payLoads = createPayLoads(callDataRecordPluses, call);
             call.setPayLoads(payLoads);
 
-            var df = new DecimalFormat("0.00");
-            df.setDecimalFormatSymbols(new DecimalFormatSymbols(Locale.US));
-
             var sumCost = payLoads.stream().mapToDouble(PayLoad::getCost).sum();
-            call.setTotalCost(getTotalCostByTariff(sumCost, call.getTariff()));
-            call.setMonetaryUnit(MONETARY_UNIT);
+
+            var totalCostByTariff = getTotalCostByTariff(sumCost, call.getTariff());
+            call.setTotalCost(totalCostByTariff);
+            callService.createCall(call);
+            log.info("Звонок со стоимостью сохранен в базу");
+
             changeBalanceList.add(ChangeBalance.builder()
                     .numberPhone(numberPhone)
-                    .cost(sumCost).build());
-            callService.createCall(call);
+                    .cost(totalCostByTariff).build());
 
-            log.info("Звонок сохранен в базу");
+
         });
         byte[] changeBalanceBytes = exportCommand.process(changeBalanceList);
         senderService.send(changeBalanceBytes);

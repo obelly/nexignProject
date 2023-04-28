@@ -3,17 +3,13 @@ package ru.nexign.brtservice.command.parser.impl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.nexign.brtservice.command.parser.ParseCommand;
-import ru.nexign.brtservice.dto.CallDataRecord;
 import ru.nexign.brtservice.dto.ChangeBalance;
-import ru.nexign.brtservice.enums.CallTypeEnum;
-import ru.nexign.brtservice.enums.DatePatternEnum;
 import ru.nexign.brtservice.exception.FileInteractionException;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +17,6 @@ import java.util.List;
 /**
  * Реализация сервиса парсинга файлов.
  * <p>
- *
  */
 @Service
 @Slf4j

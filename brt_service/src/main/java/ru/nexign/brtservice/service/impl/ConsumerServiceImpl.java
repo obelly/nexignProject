@@ -8,6 +8,7 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
 import ru.nexign.brtservice.command.export.ExportCommand;
 import ru.nexign.brtservice.command.parser.ParseCommand;
+import ru.nexign.brtservice.dto.BillingResponse;
 import ru.nexign.brtservice.dto.CallDataRecord;
 import ru.nexign.brtservice.dto.CallDataRecordPlus;
 import ru.nexign.brtservice.dto.ChangeBalance;
@@ -43,7 +44,7 @@ public class ConsumerServiceImpl implements ConsumerService {
                 callDataRecordPlus.setNumberPhone(callDataRecord.getNumberPhone());
 
                 callDataRecordPlus.setTariffType(abonentService.getAbonentByPhone(
-                                callDataRecord.getNumberPhone()).getTariff().getTariffNumber());
+                        callDataRecord.getNumberPhone()).getTariff().getTariffNumber());
 
                 callDataRecordPlus.setCallType(callDataRecord.getCallType());
                 callDataRecordPlus.setStartTime(callDataRecord.getStartTime());
@@ -78,10 +79,10 @@ public class ConsumerServiceImpl implements ConsumerService {
     @RabbitListener(queues = "abonent_money")
     @Override
     public void consumeAbonentMoney(byte[] changeBalance) {
+        abonentService.setUpdated();
         changeBalanceParseCommand.process(changeBalance)
                 .forEach(abonentService::changeBalance);
         log.info("Произошли изменения в базе");
-
     }
 
 }

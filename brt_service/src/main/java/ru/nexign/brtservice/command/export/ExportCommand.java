@@ -4,7 +4,6 @@ import java.util.List;
 
 /**
  * Сервис выгрузки файлов.
- *
  */
 public interface ExportCommand<T> {
 

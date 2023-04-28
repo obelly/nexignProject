@@ -7,5 +7,5 @@ import lombok.Getter;
 @Getter
 public class BillingResponse {
     private String phoneNumber;
-    private Double balance;
+    private String balance;
 }

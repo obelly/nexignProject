@@ -39,6 +39,8 @@ public class Abonent {
     @JoinColumn(name = "tariff_id")
     Tariff tariff;
 
+    Boolean isUpdated;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

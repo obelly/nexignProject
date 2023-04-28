@@ -28,7 +28,6 @@ public enum TariffTypeEnum {
         Arrays.stream(TariffTypeEnum.values())
                 .forEach(callTypeEnum -> tariffTypeEnumMap.put(callTypeEnum.getNumber(), callTypeEnum));
     }
-
     public static TariffTypeEnum getByNumber(String number) {
         return tariffTypeEnumMap.get(number);
     }

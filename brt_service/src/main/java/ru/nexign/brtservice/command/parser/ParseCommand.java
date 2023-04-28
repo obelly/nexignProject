@@ -4,12 +4,12 @@ import java.util.List;
 
 /**
  * Сервис парсинга файлов.
- *
  */
 public interface ParseCommand<T> {
 
     /**
      * Парсинг файла.
+     *
      * @param file файл в байтах
      * @return список сущностей
      */

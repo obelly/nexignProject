@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +17,7 @@ import ru.nexign.brtservice.dto.TariffResponse;
 import ru.nexign.brtservice.dto.UserRequest;
 import ru.nexign.brtservice.dto.UserResponse;
 import ru.nexign.brtservice.service.AbonentService;
+import ru.nexign.brtservice.service.ConsumerService;
 
 import java.util.List;
 
@@ -28,13 +28,10 @@ import java.util.List;
 public class BrtController {
 
     AbonentService abonentService;
-    @GetMapping(("/hello"))
-    public String hello(){
-        return "Hello";
-    }
+    ConsumerService consumerService;
 
     @PatchMapping(value = "/abonent/pay", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AbonentPayResponse> replenishAccount (@RequestBody AbonentPayRequest request){
+    public ResponseEntity<AbonentPayResponse> replenishAccount(@RequestBody AbonentPayRequest request) {
         return abonentService.replenishAccount(request);
     }
 
@@ -47,10 +44,11 @@ public class BrtController {
     public ResponseEntity<TariffResponse> changeTariff(@RequestBody TariffRequest request) {
         return abonentService.changeTariff(request);
     }
+
     @PatchMapping("/manager/billing")
     public ResponseEntity<List<BillingResponse>> billing() {
         abonentService.getAllAbonentsPhoneAndSend();
-        return abonentService.getAllAbonents();
+        return abonentService.getChangedAbonents();
     }
 
 }

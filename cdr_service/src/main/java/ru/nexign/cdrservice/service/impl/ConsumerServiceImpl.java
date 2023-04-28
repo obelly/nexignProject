@@ -22,6 +22,7 @@ public class ConsumerServiceImpl implements ConsumerService {
     @RabbitListener(queues = "abonent_numbers_answer")
     @Override
     public void consumePhoneNumbers(List<String> phoneNumbers) {
+
         fileService.generateFileWithCallDataRecords(phoneNumbers);
         log.info("Список номеров передан в генератор файла cdr");
     }

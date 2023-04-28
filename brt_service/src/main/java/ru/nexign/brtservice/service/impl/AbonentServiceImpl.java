@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -23,8 +24,11 @@ import ru.nexign.brtservice.repository.TariffRepository;
 import ru.nexign.brtservice.service.AbonentService;
 import ru.nexign.brtservice.service.ProducerService;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 @Slf4j
 @Service
@@ -47,16 +51,21 @@ public class AbonentServiceImpl implements AbonentService {
         log.info("Список номеров отправлен");
     }
 
-    public ResponseEntity<List<BillingResponse>> getAllAbonents() {
+    public ResponseEntity<List<BillingResponse>> getChangedAbonents() {
+        var df = new DecimalFormat("0.00");
+        df.setDecimalFormatSymbols(new DecimalFormatSymbols(Locale.US));
         List<BillingResponse> billingResponseList = new ArrayList<>();
-        var abonents = abonentRepository.findAll();
-        abonents.forEach(abonent -> {
-            var billingResponse = BillingResponse.builder()
-                    .phoneNumber(abonent.getNumberPhone())
-                    .balance(abonent.getBalance()).build();
-            billingResponseList.add(billingResponse);
-        });
-
+        List<Abonent> abonentsByIsUpdatedTrue = abonentRepository.getAbonentsByIsUpdatedTrue();
+        abonentsByIsUpdatedTrue
+                .forEach(abonent -> {
+                    if (abonent.getBalance() > 0) {
+                        var billingResponse = BillingResponse.builder()
+                                .phoneNumber(abonent.getNumberPhone())
+                                .balance(df.format(abonent.getBalance()))
+                                .build();
+                        billingResponseList.add(billingResponse);
+                    }
+                });
         return new ResponseEntity<>(billingResponseList, HttpStatus.OK);
     }
 
@@ -130,7 +139,16 @@ public class AbonentServiceImpl implements AbonentService {
         abonentRepository.getAbonentByNumberPhone(response.getNumberPhone())
                 .ifPresent(abonent -> {
                     abonent.setBalance(abonent.getBalance() - response.getCost());
+                    abonent.setIsUpdated(true);
                     abonentRepository.save(abonent);
                 });
+    }
+
+    @Transactional
+    public void setUpdated() {
+        abonentRepository.findAll().forEach(abonent -> {
+            abonent.setIsUpdated(false);
+            abonentRepository.save(abonent);
+        });
     }
 }

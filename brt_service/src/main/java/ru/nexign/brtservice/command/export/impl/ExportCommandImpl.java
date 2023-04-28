@@ -3,7 +3,6 @@ package ru.nexign.brtservice.command.export.impl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.nexign.brtservice.command.export.ExportCommand;
-import ru.nexign.brtservice.dto.CallDataRecord;
 import ru.nexign.brtservice.dto.CallDataRecordPlus;
 import ru.nexign.brtservice.exception.FileInteractionException;
 
@@ -14,6 +13,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.time.LocalTime;
 import java.util.List;
 
 /**
@@ -25,7 +25,7 @@ import java.util.List;
 @Service
 @Slf4j
 public class ExportCommandImpl implements ExportCommand<CallDataRecordPlus> {
-    private static final String FILE_NAME = "cdr_plus.txt";
+    private static final String FILE_NAME = "cdr_plus_%s.txt";
     private static final String ROOT_DIRECTORY = "brt_service/cdr_plus_files";
 
     public byte[] process(List<CallDataRecordPlus> callDataRecordPluses) {
@@ -34,10 +34,10 @@ public class ExportCommandImpl implements ExportCommand<CallDataRecordPlus> {
         if (!dir.exists() && !dir.mkdirs()) {
             log.warn("Не удалось создать директорию: {}", ROOT_DIRECTORY);
         }
-        var fileName = String.format(FILE_NAME);
+
+        var fileName = String.format(FILE_NAME, LocalTime.now());
         var file = new File(dir, fileName);
         var baos = new ByteArrayOutputStream();
-
         try (var fileWriter = new FileWriter(file);
              var bufferedWriter = new BufferedWriter(fileWriter);
              var streamWriter = new OutputStreamWriter(baos)) {
