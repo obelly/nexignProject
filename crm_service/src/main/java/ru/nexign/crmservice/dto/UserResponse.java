@@ -7,6 +7,6 @@ import lombok.Getter;
 @Getter
 public class UserResponse {
     private String numberPhone;
-    private String tariff;
+    private String tariffId;
     private Double balance;
 }

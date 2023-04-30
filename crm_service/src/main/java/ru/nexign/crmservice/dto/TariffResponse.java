@@ -8,5 +8,5 @@ import lombok.Getter;
 public class TariffResponse {
     private Long id;
     private String numberPhone;
-    private String tariff;
+    private String tariffId;
 }

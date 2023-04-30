@@ -63,15 +63,7 @@ Fbrt_service/src/main/java/ru/nexign/brtservice/service/FileSender.java,a/9/a91
 7
 pom.xml,4/4/442292b8a7efeabbe4cc176709b833b1792140ec
 v
-Fcrm_service/src/main/java/ru/nexign/crmservice/service/BrtService.java,6/f/6fd12a654b87779b7a6dab7a89cfa4f8f5962dc2
-{
-Kcrm_service/src/main/java/ru/nexign/crmservice/client/BrtServiceClient.java,3/f/3f2ecd7bf77e266a8e0aafcabce06ebe1093ce23
-}
-Mcrm_service/src/main/java/ru/nexign/crmservice/controllers/HrsController.java,0/b/0b22af7f73785b9b389d7d97733df204b5e3abca
-v
 Fcrm_service/src/main/java/ru/nexign/crmservice/service/HrsService.java,a/d/adf07c373731ef5b0be267fb29113b246d57a51e
-{
-Kcrm_service/src/main/java/ru/nexign/crmservice/client/HrsServiceClient.java,0/a/0a48cdffb210ff2def628b9679e2618e28f31654
 z
 Jhrs_service/src/main/java/ru/nexign/hrsservice/service/PayLoadService.java,a/2/a28ee4bb6f4bf4b180da6e8e37f0beae5be5cb0f
 C

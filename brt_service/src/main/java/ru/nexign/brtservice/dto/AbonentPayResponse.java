@@ -11,5 +11,5 @@ import lombok.Setter;
 public class AbonentPayResponse {
     private Long id;
     private String numberPhone;
-    private Double money;
+    private Double balance;
 }

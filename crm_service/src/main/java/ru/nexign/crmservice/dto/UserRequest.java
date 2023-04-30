@@ -8,6 +8,6 @@ import lombok.Getter;
 @Getter
 public class UserRequest {
     private String numberPhone;
-    private String tariff;
+    private String tariffId;
     private Double balance;
 }

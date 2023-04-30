@@ -15,7 +15,7 @@ import java.time.LocalTime;
 @Setter
 @Builder
 public class CallResponse {
-    private String call;
+    private String callType;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private LocalTime duration;

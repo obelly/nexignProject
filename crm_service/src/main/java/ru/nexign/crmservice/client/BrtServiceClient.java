@@ -5,6 +5,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import ru.nexign.crmservice.dto.AbonentPayRequest;
 import ru.nexign.crmservice.dto.AbonentPayResponse;
@@ -22,7 +23,7 @@ public interface BrtServiceClient {
     @PatchMapping(value = "/abonent/pay", produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<AbonentPayResponse> replenishAccount(@RequestBody AbonentPayRequest request);
 
-    @PatchMapping(value = "/manager/abonent", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/manager/abonent", produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<UserResponse> addNewAbonent(@RequestBody UserRequest request);
 
     @PatchMapping(value = "/manager/changeTariff", produces = MediaType.APPLICATION_JSON_VALUE)

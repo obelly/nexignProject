@@ -15,7 +15,7 @@ import java.util.List;
 public class AbonentCallsResponse {
     private Long id;
     private String numberPhone;
-    private String tariff;
+    private String tariffIndex;
     private List<CallResponse> payload;
     private Double totalCost;
     private String monetaryUnit;

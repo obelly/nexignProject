@@ -4,7 +4,6 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -81,7 +80,7 @@ public class AbonentServiceImpl implements AbonentService {
             return new ResponseEntity<>(AbonentPayResponse.builder()
                     .id(abonent.getId())
                     .numberPhone(abonent.getNumberPhone())
-                    .money(request.getMoney())
+                    .balance(sum)
                     .build(), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -95,7 +94,7 @@ public class AbonentServiceImpl implements AbonentService {
         var abonentsPhoneNumber = abonentRepository.findAll().stream()
                 .map(Abonent::getNumberPhone)
                 .toList();
-        Tariff tariff = tariffRepository.getTariffByTariffNumber(request.getTariff()).orElse(null);
+        Tariff tariff = tariffRepository.getTariffByTariffNumber(request.getTariffId()).orElse(null);
 
         if (!abonentsPhoneNumber.contains(request.getNumberPhone()) && tariff != null) {
             var abonent = new Abonent();
@@ -107,7 +106,7 @@ public class AbonentServiceImpl implements AbonentService {
             return new ResponseEntity<>(UserResponse.builder()
                     .numberPhone(abonent.getNumberPhone())
                     .balance(abonent.getBalance())
-                    .tariff(abonent.getTariff().getTariffNumber())
+                    .tariffId(abonent.getTariff().getTariffNumber())
                     .build(), HttpStatus.CREATED);
         } else {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -118,14 +117,14 @@ public class AbonentServiceImpl implements AbonentService {
     @Override
     public ResponseEntity<TariffResponse> changeTariff(TariffRequest request) {
         var abonent = abonentRepository.getAbonentByNumberPhone(request.getNumberPhone()).orElse(null);
-        Tariff tariff = tariffRepository.getTariffByTariffNumber(request.getTariff()).orElse(null);
+        Tariff tariff = tariffRepository.getTariffByTariffNumber(request.getTariffId()).orElse(null);
         if (abonent != null && tariff != null) {
             abonent.setTariff(tariff);
             abonentRepository.save(abonent);
             return new ResponseEntity<>(TariffResponse.builder()
                     .id(abonent.getId())
                     .numberPhone(abonent.getNumberPhone())
-                    .tariff(tariff.getTariffNumber())
+                    .tariffId(tariff.getTariffNumber())
                     .build(), HttpStatus.OK);
         } else {
 

@@ -9,6 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,7 +37,7 @@ public class BrtController {
         return brtService.replenishAccount(request);
     }
 
-    @PatchMapping(value = "/manager/abonent", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/manager/abonent", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserResponse> addNewAbonent(@RequestBody UserRequest request) {
         return brtService.addNewAbonent(request);
     }

@@ -44,7 +44,7 @@ public class PayLoadServiceImpl implements PayLoadService {
         return AbonentCallsResponse.builder()
                 .id(call.getId())
                 .numberPhone(call.getNumberPhone())
-                .tariff(call.getTariff().name())
+                .tariffIndex(call.getTariff().name())
                 .payload(abonentCalls)
                 .totalCost(call.getTotalCost())
                 .monetaryUnit(call.getMonetaryUnit())

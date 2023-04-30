@@ -9,5 +9,5 @@ import lombok.ToString;
 @ToString
 public class TariffRequest {
     private String numberPhone;
-    private String tariff;
+    private String tariffId;
 }
