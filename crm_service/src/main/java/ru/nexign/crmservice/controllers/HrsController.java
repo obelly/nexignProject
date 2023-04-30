@@ -17,7 +17,7 @@ import ru.nexign.crmservice.service.HrsService;
 @RestController
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-@RequestMapping("/abonent/")
+@RequestMapping("/abonent")
 public class HrsController {
     HrsService hrsService;
 

@@ -18,7 +18,6 @@ import ru.nexign.brtservice.dto.TariffResponse;
 import ru.nexign.brtservice.dto.UserRequest;
 import ru.nexign.brtservice.dto.UserResponse;
 import ru.nexign.brtservice.service.AbonentService;
-import ru.nexign.brtservice.service.ConsumerService;
 
 import java.util.List;
 
@@ -35,12 +34,12 @@ public class BrtController {
         return abonentService.replenishAccount(request);
     }
 
-    @PatchMapping(value = "/manager/abonent", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/manager/abonent", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserResponse> addNewAbonent(@RequestBody UserRequest request) {
         return abonentService.addNewAbonent(request);
     }
 
-    @PostMapping(value = "/manager/changeTariff", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PatchMapping(value = "/manager/changeTariff", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<TariffResponse> changeTariff(@RequestBody TariffRequest request) {
         return abonentService.changeTariff(request);
     }

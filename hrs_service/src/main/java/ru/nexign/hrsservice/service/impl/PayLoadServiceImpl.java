@@ -3,6 +3,7 @@ package ru.nexign.hrsservice.service.impl;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.nexign.hrsservice.dto.AbonentCallsResponse;
 import ru.nexign.hrsservice.dto.CallResponse;
@@ -17,6 +18,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@Slf4j
 public class PayLoadServiceImpl implements PayLoadService {
     PayLoadRepository payLoadRepository;
     CallRepository callRepository;
@@ -26,13 +28,13 @@ public class PayLoadServiceImpl implements PayLoadService {
     }
 
     @Override
-    public AbonentCallsResponse detailingCalls(String numbersPhone) {
-        var call = callRepository.getCallByNumberPhone(numbersPhone).orElse(null);
+    public AbonentCallsResponse detailingCalls(String numberPhone) {
+        var call = callRepository.getCallByNumberPhone(numberPhone).orElse(null);
         var allPayLoadsByCall = payLoadRepository.getAllByCall(call);
         List<CallResponse> abonentCalls = new ArrayList<>();
         allPayLoadsByCall.forEach(payLoad -> {
             CallResponse callResponse = CallResponse.builder()
-                    .callType(payLoad.getCallType())
+                    .callType(payLoad.getCallType().getNumber())
                     .startTime(payLoad.getStartTime())
                     .endTime(payLoad.getEndTime())
                     .duration(payLoad.getDuration())
@@ -44,7 +46,7 @@ public class PayLoadServiceImpl implements PayLoadService {
         return AbonentCallsResponse.builder()
                 .id(call.getId())
                 .numberPhone(call.getNumberPhone())
-                .tariffIndex(call.getTariff().name())
+                .tariffIndex(call.getTariff().getNumber())
                 .payload(abonentCalls)
                 .totalCost(call.getTotalCost())
                 .monetaryUnit(call.getMonetaryUnit())

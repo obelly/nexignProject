@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ru.nexign.hrsservice.enums.CallTypeEnum;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -16,7 +15,7 @@ import java.time.LocalTime;
 @Setter
 @Builder
 public class CallResponse {
-    private CallTypeEnum callType;
+    private String callType;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private LocalTime duration;
