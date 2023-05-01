@@ -1,4 +1,4 @@
-package ru.nexign.crmservice.controllers;
+package ru.nexign.crmservice.controller;
 
 
 import lombok.AccessLevel;

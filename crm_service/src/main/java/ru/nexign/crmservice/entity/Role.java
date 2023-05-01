@@ -1,10 +1,7 @@
-package ru.nexign.hrsservice.entity;
+package ru.nexign.crmservice.entity;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -16,7 +13,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
-import ru.nexign.hrsservice.enums.TariffTypeEnum;
+import org.springframework.security.core.GrantedAuthority;
 
 import java.util.List;
 
@@ -26,23 +23,20 @@ import java.util.List;
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-@Table(name = "calls")
+@Table(name = "roles")
+public class Role implements GrantedAuthority {
 
-public class Call {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
-    String numberPhone;
-    Double totalCost;
-    String monetaryUnit;
-    @Enumerated(EnumType.STRING)
-    TariffTypeEnum tariff;
-    @OneToMany(mappedBy = "call",
-            orphanRemoval = true,
-            cascade = CascadeType.ALL)
-    private List<PayLoad> payLoads;
+    @Column(name = "id", nullable = false)
+    private Long id;
+    String role;
 
-    public Call(String numberPhone) {
-        this.numberPhone = numberPhone;
+    @OneToMany(mappedBy = "role")
+    List<User> users;
+
+    @Override
+    public String getAuthority() {
+        return role;
     }
 }

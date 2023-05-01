@@ -10,7 +10,6 @@ import java.util.Optional;
 public interface AbonentRepository extends JpaRepository<Abonent, Long> {
 
     Optional<Abonent> getAbonentByNumberPhone(String numberPhone);
-
     List<Abonent> getAbonentsByIsUpdatedTrue();
 
 
