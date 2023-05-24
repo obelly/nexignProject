@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import ru.nexign.crmservice.dto.AbonentCallsResponse;
 
 
-@FeignClient(name = "hrsClient", url = "http://localhost:9090/")
+@FeignClient(name = "hrsClient", url = "http://hrs-service:8686/")
 public interface HrsServiceClient {
     @GetMapping("/abonent/report/{numberPhone}")
     ResponseEntity<AbonentCallsResponse> detailingCalls(@PathVariable("numberPhone") String numberPhone);

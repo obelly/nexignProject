@@ -4,8 +4,6 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.nexign.brtservice.dto.AbonentPayRequest;
@@ -50,7 +48,7 @@ public class AbonentServiceImpl implements AbonentService {
         log.info("Список номеров отправлен");
     }
 
-    public ResponseEntity<List<BillingResponse>> getChangedAbonents() {
+    public List<BillingResponse> getChangedAbonents() {
         var df = new DecimalFormat("0.00");
         df.setDecimalFormatSymbols(new DecimalFormatSymbols(Locale.US));
         List<BillingResponse> billingResponseList = new ArrayList<>();
@@ -58,39 +56,35 @@ public class AbonentServiceImpl implements AbonentService {
         abonentsByIsUpdatedTrue
                 .forEach(abonent -> {
                     if (abonent.getBalance() > 0) {
-                        var billingResponse = BillingResponse.builder()
-                                .phoneNumber(abonent.getNumberPhone())
-                                .balance(df.format(abonent.getBalance()))
-                                .build();
+                        var billingResponse = new BillingResponse(
+                                abonent.getNumberPhone(),
+                                df.format(abonent.getBalance()));
                         billingResponseList.add(billingResponse);
                     }
                 });
-        return new ResponseEntity<>(billingResponseList, HttpStatus.OK);
+        return billingResponseList;
     }
 
     @Transactional
     @Override
-    public ResponseEntity<AbonentPayResponse> replenishAccount(AbonentPayRequest request) {
+    public AbonentPayResponse replenishAccount(AbonentPayRequest request) {
         var abonent = abonentRepository.getAbonentByNumberPhone(request.getNumberPhone()).orElse(null);
         if (abonent != null) {
             var sum = abonent.getBalance() + request.getMoney();
             abonent.setBalance(sum);
             abonentRepository.save(abonent);
 
-            return new ResponseEntity<>(AbonentPayResponse.builder()
-                    .id(abonent.getId())
-                    .numberPhone(abonent.getNumberPhone())
-                    .balance(sum)
-                    .build(), HttpStatus.OK);
+            return new AbonentPayResponse(abonent.getId(),
+                    abonent.getNumberPhone(),
+                    sum);
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return null;
         }
-
     }
 
     @Transactional
     @Override
-    public ResponseEntity<UserResponse> addNewAbonent(UserRequest request) {
+    public UserResponse addNewAbonent(UserRequest request) {
         var abonentsPhoneNumber = abonentRepository.findAll().stream()
                 .map(Abonent::getNumberPhone)
                 .toList();
@@ -103,32 +97,29 @@ public class AbonentServiceImpl implements AbonentService {
             abonent.setBalance(request.getBalance());
             abonentRepository.save(abonent);
 
-            return new ResponseEntity<>(UserResponse.builder()
-                    .numberPhone(abonent.getNumberPhone())
-                    .balance(abonent.getBalance())
-                    .tariffId(abonent.getTariff().getTariffNumber())
-                    .build(), HttpStatus.CREATED);
+            return new UserResponse(
+                    abonent.getNumberPhone(),
+                    abonent.getTariff().getTariffNumber(),
+                    abonent.getBalance());
         } else {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return null;
         }
     }
 
     @Transactional
     @Override
-    public ResponseEntity<TariffResponse> changeTariff(TariffRequest request) {
+    public TariffResponse changeTariff(TariffRequest request) {
         var abonent = abonentRepository.getAbonentByNumberPhone(request.getNumberPhone()).orElse(null);
         Tariff tariff = tariffRepository.getTariffByTariffNumber(request.getTariffId()).orElse(null);
         if (abonent != null && tariff != null) {
             abonent.setTariff(tariff);
             abonentRepository.save(abonent);
-            return new ResponseEntity<>(TariffResponse.builder()
-                    .id(abonent.getId())
-                    .numberPhone(abonent.getNumberPhone())
-                    .tariffId(tariff.getTariffNumber())
-                    .build(), HttpStatus.OK);
+            return new TariffResponse(
+                    abonent.getId(),
+                    abonent.getNumberPhone(),
+                    tariff.getTariffNumber());
         } else {
-
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return null;
         }
 
     }

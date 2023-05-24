@@ -1,15 +1,2 @@
 server:
-  port: 8989
-spring:
-  datasource:
-    driverClassName: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5435/postgres?currentSchema=public
-    username: postgres
-    password: postgres
-  jpa:
-    hibernate:
-      ddl-auto: validate
-#  security:
-#    user:
-#      name: admin
-#      password: 123
+  port: 8585

@@ -33,23 +33,21 @@ public class PayLoadServiceImpl implements PayLoadService {
         var allPayLoadsByCall = payLoadRepository.getAllByCall(call);
         List<CallResponse> abonentCalls = new ArrayList<>();
         allPayLoadsByCall.forEach(payLoad -> {
-            CallResponse callResponse = CallResponse.builder()
-                    .callType(payLoad.getCallType().getNumber())
-                    .startTime(payLoad.getStartTime())
-                    .endTime(payLoad.getEndTime())
-                    .duration(payLoad.getDuration())
-                    .cost(payLoad.getCost())
-                    .build();
+            var callResponse = new CallResponse(
+                    payLoad.getCallType().getNumber(),
+                    payLoad.getStartTime(),
+                    payLoad.getEndTime(),
+                    payLoad.getDuration(),
+                    payLoad.getCost());
             abonentCalls.add(callResponse);
         });
         assert call != null;
-        return AbonentCallsResponse.builder()
-                .id(call.getId())
-                .numberPhone(call.getNumberPhone())
-                .tariffIndex(call.getTariff().getNumber())
-                .payload(abonentCalls)
-                .totalCost(call.getTotalCost())
-                .monetaryUnit(call.getMonetaryUnit())
-                .build();
+        return new AbonentCallsResponse(
+                call.getId(),
+                call.getNumberPhone(),
+                call.getTariff().getNumber(),
+                abonentCalls,
+                call.getTotalCost(),
+                call.getMonetaryUnit());
     }
 }

@@ -17,12 +17,11 @@ import java.util.List;
 
 public interface AbonentService {
     Abonent getAbonentByPhone(String phone);
-    ResponseEntity<List<BillingResponse>> getChangedAbonents();
+    List<BillingResponse> getChangedAbonents();
     void getAllAbonentsPhoneAndSend();
     void changeBalance(ChangeBalance response);
-    ResponseEntity<AbonentPayResponse> replenishAccount (@RequestBody AbonentPayRequest request);
-
-    ResponseEntity<UserResponse> addNewAbonent(@RequestBody UserRequest requestRO);
-    ResponseEntity<TariffResponse> changeTariff(@RequestBody TariffRequest request);
+    AbonentPayResponse replenishAccount (@RequestBody AbonentPayRequest request);
+    UserResponse addNewAbonent(@RequestBody UserRequest requestRO);
+    TariffResponse changeTariff(@RequestBody TariffRequest request);
     void setUpdated();
 }

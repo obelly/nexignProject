@@ -1,0 +1,128 @@
+version: '3'
+services:
+  rabbitmq:
+    image: rabbitmq:3.11.0-management
+    container_name: rabbitmq
+    hostname: rabbitmq
+    restart: always
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+      TZ: Europe/Moscow
+    networks:
+      nexign:
+        aliases:
+          - rabbitmq
+
+  postgres:
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+      TZ: Europe/Moscow
+    restart: unless-stopped
+    networks:
+      nexign:
+        aliases:
+          - postgres
+
+  postgres2:
+    image: postgres
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+      TZ: Europe/Moscow
+    restart: unless-stopped
+    networks:
+      nexign:
+        aliases:
+          - postgres2
+
+  cdr:
+    image: cdrservice
+    container_name: cdr_service
+    ports:
+      - "8888:8888"
+    environment:
+      SPRING_RABBITMQ_HOST: rabbitmq
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+      TZ: Europe/Moscow
+    depends_on:
+      - rabbitmq
+    networks:
+      nexign:
+        aliases:
+          - cdr-service
+
+  brt:
+    image: brtservice
+    container_name: brt_service
+    ports:
+      - "8787:8787"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/postgres
+      SPRING_RABBITMQ_HOST: rabbitmq
+      POSTGRES_DB: postgres
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      TZ: Europe/Moscow
+    depends_on:
+      - rabbitmq
+      - postgres
+    networks:
+      nexign:
+        aliases:
+          - brt-service
+
+  hrs:
+    image: hrsservice
+    container_name: hrs_service
+    ports:
+      - "8686:8686"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres2:5432/postgres
+      SPRING_RABBITMQ_HOST: rabbitmq
+      POSTGRES_DB: postgres
+      POSTGRES_HOST: postgres2
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      TZ: Europe/Moscow
+    depends_on:
+      - rabbitmq
+      - postgres2
+    networks:
+      nexign:
+        aliases:
+          - hrs-service
+
+  crm:
+    image: crmservice
+    container_name: crm_service
+    ports:
+      - "8585:8585"
+    networks:
+      nexign:
+        aliases:
+          - crm-service
+
+volumes:
+  rabbitmq_data:
+
+networks:
+  nexign:
+    driver: bridge

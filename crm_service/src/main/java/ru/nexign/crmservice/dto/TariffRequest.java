@@ -1,12 +1,10 @@
 package ru.nexign.crmservice.dto;
 
-import lombok.Builder;
 import lombok.Getter;
-import lombok.ToString;
+import lombok.Setter;
 
-@Builder
 @Getter
-@ToString
+@Setter
 public class TariffRequest {
     private String numberPhone;
     private String tariffId;

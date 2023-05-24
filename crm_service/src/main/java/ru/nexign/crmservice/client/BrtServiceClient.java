@@ -18,7 +18,7 @@ import ru.nexign.crmservice.dto.UserResponse;
 import java.util.List;
 
 
-@FeignClient(name = "brtClient", url = "http://localhost:8787/")
+@FeignClient(name = "brtClient", url = "http://brt-service:8787/")
 public interface BrtServiceClient {
     @PatchMapping(value = "/abonent/pay", produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<AbonentPayResponse> replenishAccount(@RequestBody AbonentPayRequest request);

@@ -76,9 +76,7 @@ public class ConsumerServiceImpl implements ConsumerService {
             callService.createCall(call);
             log.info("Звонок со стоимостью сохранен в базу");
 
-            changeBalanceList.add(ChangeBalance.builder()
-                    .numberPhone(numberPhone)
-                    .cost(totalCostByTariff).build());
+            changeBalanceList.add(new ChangeBalance(numberPhone,totalCostByTariff));
 
 
         });
@@ -130,8 +128,6 @@ public class ConsumerServiceImpl implements ConsumerService {
                             payLoad.setCost(ZERO);
                         }
                     }
-                    default ->
-                            throw new RuntimeException(String.format("Неизвестный тариф: %s", callDataRecordPlus.getTariffType()));
                 }
             } else {
                 payLoad.setCost(ZERO);

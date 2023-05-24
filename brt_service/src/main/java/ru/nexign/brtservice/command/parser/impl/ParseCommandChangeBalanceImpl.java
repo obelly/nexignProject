@@ -31,10 +31,9 @@ public class ParseCommandChangeBalanceImpl implements ParseCommand<ChangeBalance
             String line;
             while ((line = reader.readLine()) != null) {
                 var fields = line.split(SPLIT_REGEX);
-                ChangeBalance build = ChangeBalance.builder()
-                        .numberPhone(fields[0])
-                        .cost(Double.valueOf(fields[1]))
-                        .build();
+                var build = new ChangeBalance(
+                        fields[0],
+                        Double.valueOf(fields[1]));
                 changeBalanceList.add(build);
             }
         } catch (IOException e) {

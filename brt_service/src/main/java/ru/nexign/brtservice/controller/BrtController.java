@@ -3,6 +3,7 @@ package ru.nexign.brtservice.controller;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -31,23 +32,35 @@ public class BrtController {
 
     @PatchMapping(value = "/abonent/pay", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AbonentPayResponse> replenishAccount(@RequestBody AbonentPayRequest request) {
-        return abonentService.replenishAccount(request);
+        var abonentPayResponse = abonentService.replenishAccount(request);
+        if (abonentPayResponse != null) {
+            return new ResponseEntity<>(abonentPayResponse, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @PostMapping(value = "/manager/abonent", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserResponse> addNewAbonent(@RequestBody UserRequest request) {
-        return abonentService.addNewAbonent(request);
+        var userResponse = abonentService.addNewAbonent(request);
+        if (userResponse != null){
+            return new ResponseEntity<>(userResponse, HttpStatus.CREATED);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @PatchMapping(value = "/manager/changeTariff", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<TariffResponse> changeTariff(@RequestBody TariffRequest request) {
-        return abonentService.changeTariff(request);
+        var tariffResponse = abonentService.changeTariff(request);
+        if (tariffResponse != null){
+            return new ResponseEntity<>(tariffResponse, HttpStatus.CREATED);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @PatchMapping("/manager/billing")
     public ResponseEntity<List<BillingResponse>> billing() {
         abonentService.getAllAbonentsPhoneAndSend();
-        return abonentService.getChangedAbonents();
+        return new ResponseEntity<>(abonentService.getChangedAbonents(), HttpStatus.OK);
     }
 
 }

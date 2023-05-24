@@ -17,7 +17,6 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 public class CallDataRecord {
 
     private String numberPhone;

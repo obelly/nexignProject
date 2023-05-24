@@ -1,15 +1,15 @@
 package ru.nexign.hrsservice.dto;
 
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.io.Serializable;
-
-@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
-public class ChangeBalance implements Serializable {
+public class ChangeBalance {
     private String numberPhone;
     private Double cost;
 
